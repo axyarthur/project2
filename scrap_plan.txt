@@ -1,0 +1,9 @@
+Field:
+Gamespot
+Name of Game
+Name of Developer
+Date of Release
+Price
+Genre (more than 1)
+Rating /Review
+Number of Reviews
