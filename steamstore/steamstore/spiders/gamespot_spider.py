@@ -21,20 +21,20 @@ class GamespotSpider(Spider):
 		+ str(i) for i in range(1, page + 1)]
 		
 		#yield each review page to next function 
-		for url in result_urls[:1]:  #first page for now
+		for url in result_urls:  
 			yield Request(url = url, callback = self.parse_game_page)
 	
 	def parse_game_page(self, response):
 		#nagaviate to each game page
 		game_pages = response.xpath('//article/a[@class = "js-event-tracking"]/@href').extract()
 		game_urls = list(map(lambda x: "https://www.gamespot.com" + x, game_pages))
-		for url in game_urls:   #first link for now
+		for url in game_urls:   
 			yield Request(url = url, callback = self.game_review_page)
 	
 	def game_review_page(self, response):
 		title = response.xpath('//div[@id = "object-stats-wrap"]//h3/a/text()').extract_first().strip()
-		date = response.xpath('//dd[@class = "pod-objectStats-info__release"]/li/span/text()').extract_first()
-		gs_rating = response.xpath('//div[@class = "gs-score__cell"]/span/text()').extract_first()
+		date = response.xpath('//div[@id = "object-stats-wrap"]//dd[@class = "pod-objectStats-info__release"]/li/span/text()').extract_first()
+		gs_rating = response.xpath('//div[@id = "object-stats-wrap"]//div[@class = "gs-score__cell"]/span/text()').extract_first()
 		user_rating = response.xpath('//dl[@class = "breakdown-reviewScores__userAvg align-vertical--child"]/dt/a/text()').extract_first()
 		num_rev = response.xpath('//dl[@class = "breakdown-reviewScores__userAvg align-vertical--child"]/dd/text()').extract_first()
 		num_rev = re.findall('\d+', num_rev)[0]
