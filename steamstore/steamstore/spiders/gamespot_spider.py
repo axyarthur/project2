@@ -32,6 +32,7 @@ class GamespotSpider(Spider):
 			yield Request(url = url, callback = self.game_review_page)
 	
 	def game_review_page(self, response):
+		#find items on page
 		title = response.xpath('//div[@id = "object-stats-wrap"]//h3/a/text()').extract_first().strip()
 		date = response.xpath('//div[@id = "object-stats-wrap"]//dd[@class = "pod-objectStats-info__release"]/li/span/text()').extract_first()
 		gs_rating = response.xpath('//div[@id = "object-stats-wrap"]//div[@class = "gs-score__cell"]/span/text()').extract_first()
@@ -41,6 +42,7 @@ class GamespotSpider(Spider):
 		developer = response.xpath('//dl[@class = "pod-objectStats-additional"]/dd[1]/a/text()').extract()
 		genre = response.xpath('//dl[@class = "pod-objectStats-additional"]/dd[3]/a/text()').extract()
 		
+		#assign items to dictionary
 		item = GamespotItem()
 		item['title'] = title
 		item['developer'] = developer
